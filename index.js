@@ -9,12 +9,16 @@ var icons = {
 var ctx = getElement('ctx')
 var timer = getElement('timer')
 var hands = getElement('hands')
-var cpuCircle = getElement('cpucircle')
-var cpuHpBar = getElement('cpuhpbar')
-var cpuActionBar = getElement('cpuactionbar')
+
 var playerCircle = getElement('playercircle')
+var playerInfo = getElement('playerinfo')
 var playerHpBar = getElement('playerhpbar')
 var playerActionBar = getElement('playeractionbar')
+
+var cpuCircle = getElement('cpucircle')
+var cpuInfo = getElement('cpuinfo')
+var cpuHpBar = getElement('cpuhpbar')
+var cpuActionBar = getElement('cpuactionbar')
 
 function getElement(id) {
   return document.getElementById(id)
@@ -43,16 +47,16 @@ var AT_BAR_WIDTH = 352
 var turn = 0 // 0 = Player, 1 = CPU
 var activeTime = false
 
-var playerNmae = 'Isoldee'
-var playerLv = 5
-var playerMaxHP = 50
+var playerName = 'Isoldee'
+var playerLv = 1
+var playerMaxHP = 20
 var playerHP = playerMaxHP // player health points
 var playerActionBarDuration = 10 // seconds
 var playerActionBarAnimation = null
 
-var cpuName = 'Shagaar'
-var cpuLv = 2
-var cpuMaxHP = 50
+var cpuName = 'Shakhaar'
+var cpuLv = 1
+var cpuMaxHP = 10
 var cpuHP = cpuMaxHP // CPU health points
 var cpuActionBarDuration = 13 // seconds
 var cpuActionBarAnimation = null
@@ -71,6 +75,39 @@ var playerDefenseHand = []
 var cpuAttackHand = []
 var cpuLuckyHand = []
 var cpuDefenseHand = []
+
+var enemyParams = [
+  {
+    name: 'Green Slime',
+    minLv: 1,
+    maxLv: 3,
+    minHP: 5,
+    maxHP: 15,
+    actionBarDuration: 17
+  },
+  {
+    name: 'Blue Slime',
+    minLv: 2,
+    maxLv: 5,
+    minHP: 10,
+    maxHP: 30,
+    actionBarDuration: 15
+  },
+  {
+    name: 'Red Slime',
+    minLv: 5,
+    maxLv: 10,
+    minHp: 25,
+    maxHp: 50
+  },
+  {
+    name: 'Shakhaar',
+    minLv: 30,
+    maxLv: 30,
+    minHp: 50,
+    maxHp: 70
+  }
+]
 
 window.onresize = resizeWindow;
 resizeWindow()
@@ -118,6 +155,9 @@ timer.appendChild(timerAnim)
 resetGame()
 
 function resetGame() {
+  updatePlayerInfo()
+  updateCpuInfo()
+
   playerHP = playerMaxHP
   cpuHP = cpuMaxHP
   refreshPlayerHpBar()
@@ -142,6 +182,14 @@ function resetGame() {
   resetTimer()
   resetCpuActionBar()
   resetPlayerActionBar()
+}
+
+function updatePlayerInfo() {
+  playerInfo.innerHTML = `${playerName} Lv. ${playerLv}`
+}
+
+function updateCpuInfo() {
+  cpuInfo.innerHTML = `${cpuName} Lv. ${cpuLv}`
 }
 
 function removeAllCards() {
@@ -202,6 +250,7 @@ function resetPlayerActionBar() {
 }
 
 function doPlayerAction() {
+  pauseActionBars();
   var playerAttackPoints = getHandActionPoints(playerAttackHand, playerLv)
 
   if (playerAttackPoints > 0) {
@@ -235,6 +284,7 @@ function doPlayerAction() {
             resetGame()
           }
           else {
+            resumeActionBars()
             resetPlayerActionBar()
           }
         }
@@ -555,7 +605,7 @@ function getHandPoints(theHand) {
 function getHandActionPoints(theHand, multiplier) {
   var v = 0
   for(var i in theHand) {
-    v += theHand[i].getElementsByClassName("value")[0].textContent * (i + 1) * 0.5 * multiplier
+    v += theHand[i].getElementsByClassName("value")[0].textContent * 0.5 * multiplier
   }
 
   return v
