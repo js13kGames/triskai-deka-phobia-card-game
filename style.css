@@ -230,3 +230,13 @@ text.info {
   15% {translate: 0 0}
   100% {translate: 40px 0}
 }
+
+circle.portrait {
+  fill: #263998;
+  stroke: #3770ea;
+}
+
+circle.portrait.active {
+  stroke: white;
+  stroke-width: 4;
+}

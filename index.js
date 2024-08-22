@@ -9,6 +9,8 @@ var icons = {
 var ctx = document.getElementById('ctx')
 var timer = document.getElementById('timer')
 var hands = document.getElementById('hands')
+var cpucircle = document.getElementById('cpucircle')
+var playercircle = document.getElementById('playercircle')
 
 function add(element) {
   ctx.appendChild(element)
@@ -17,7 +19,7 @@ function add(element) {
 // Number of shamrocks that Player will have from the beginning
 var SHAMROCKS_ON_START = 1
 // If enabled then CPU and player are immortal
-var IMMORTALS = true
+var IMMORTALS = false
 // If enabled then the deck have only shamrocks and deaths
 var SHAMROCK_AND_DEATH_TEST = false
 
@@ -99,6 +101,7 @@ function resetGame() {
   cpuDefenseHand = []
 
   turn = 0
+  toggleCircles()
 
   addShamrocks(SHAMROCKS_ON_START)
 
@@ -128,18 +131,18 @@ function resetTimer() {
 }
 
 function onTimer() {
+  activeTime = turn == 0 ? true : false
+
+  toggleCircles()
+  toggleHands()
+
   if(turn == 1) {
-    activeTime = false
     CPU()
-  }
-  else {
-    activeTime = true
-    toggleHands()
   }
 }
 
 function CPU() {
-  cpuPickCard()
+  setTimeout(() => { cpuPickCard() }, 500 + Math.floor(Math.random() * 1000))
 }
 
 function changeTurn() {
@@ -148,6 +151,18 @@ function changeTurn() {
 
 function toggleHands() {
   hands.style.display = turn == 0 && activeTime == true ? 'block' : 'none'
+}
+
+function toggleCircles() {
+  cpucircle.classList.remove('active')
+  playercircle.classList.remove('active')
+
+  if(turn == 0) {
+    playercircle.classList.add('active')
+  }
+  else {
+    cpucircle.classList.add('active')
+  }
 }
 
 function addShamrocks(quantity) {
