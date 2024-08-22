@@ -86,6 +86,16 @@ function resizeWindow() {
   ctx.style.left = `${y}px`
 }
 
+// Prepare timer animation
+var timerAnim = document.createElementNS('http://www.w3.org/2000/svg','animate')
+timerAnim.setAttribute("attributeName", "stroke-dashoffset")
+timerAnim.setAttribute("from", 360)
+timerAnim.setAttribute("to", 0);
+timerAnim.setAttribute("dur", `${TIMER_DURATION}s`)
+timerAnim.setAttribute("fill", "forwards")
+timerAnim.onend = onTimer
+timer.appendChild(timerAnim)
+
 /* START GAME */
 resetGame()
 
@@ -117,17 +127,7 @@ function removeAllCards() {
 }
 
 function resetTimer() {
-  activeTime = false
-  
-  var anim = document.createElementNS('http://www.w3.org/2000/svg','animate')
-  anim.setAttribute("attributeName", "stroke-dashoffset")
-  anim.setAttribute("from", 360)
-  anim.setAttribute("to", 0);
-  anim.setAttribute("dur", `${TIMER_DURATION}s`)
-  anim.setAttribute("fill", "forwards")
-  anim.onend = onTimer
-  timer.appendChild(anim)
-  anim.beginElement()
+  timerAnim.beginElement()
 }
 
 function onTimer() {
