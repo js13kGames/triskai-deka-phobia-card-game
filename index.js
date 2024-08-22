@@ -441,7 +441,7 @@ function strToHtml(str) {
 function newCard(type, value = 0, side = 'back') {
   var cardtype = value == 13 ? "death" : value == 12 ? "shamrock" : type
   var numeral = numerals[value]
-  var icon = icons[type]
+  var icon = icons[cardtype]
 
   var str = `<div class="card ${cardtype} ${side}" deck="${type}">
   <div class="bg">
