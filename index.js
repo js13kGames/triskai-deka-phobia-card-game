@@ -21,6 +21,10 @@ var IMMORTALS = true
 // If enabled then the deck have only shamrocks and deaths
 var SHAMROCK_AND_DEATH_TEST = false
 
+var TIMER_DURATION = 0.5 // seconds
+var SHOW_CARD_DURATION = 1
+var MOVE_CARD_DURATION = 0.6
+
 // Timer
 var timerDuration = 0.5 // seconds
 
@@ -116,7 +120,7 @@ function resetTimer() {
   anim.setAttribute("attributeName", "stroke-dashoffset")
   anim.setAttribute("from", 360)
   anim.setAttribute("to", 0);
-  anim.setAttribute("dur", `${timerDuration}s`)
+  anim.setAttribute("dur", `${TIMER_DURATION}s`)
   anim.setAttribute("fill", "forwards")
   anim.onend = onTimer
   timer.appendChild(anim)
@@ -148,7 +152,7 @@ function toggleHands() {
 
 function addShamrocks(quantity) {
   for (var i = 0; i < quantity; i++) {
-    var c = newCard('defense', 12)
+    var c = newCard('defense', 12, 'front')
     var l = playerLuckyHand.length
     var dir = l % 2 == 0 ? -1 : 1
     var x = 297 + 15 * dir
@@ -203,9 +207,17 @@ function showCard(card, move, end) {
 
   card.style.zIndex = 100
 
+  setTimeout(function() {
+    if(card.classList.contains('back')) {
+      card.classList.remove('back')
+      card.classList.add('front')
+    }
+  }, 100)
+  
+  
   var a1 = card.animate([
       {transform: 'translate(300px, 450px) scale(1.5)'}
-    ], {duration: 700, fill: 'forwards'})
+    ], {duration: SHOW_CARD_DURATION * 1000, fill: 'forwards'})
 
   a1.finished.then(() => {
     move(card, end)
@@ -217,7 +229,7 @@ function moveToHand(card, x, y, z, end) {
 
   var anim = card.animate([
         {transform: `translate(${x}px, ${y}px) scale(1) rotate(360deg)`},
-      ], {duration: 250, fill: 'forwards'})
+      ], {duration: MOVE_CARD_DURATION * 1000, fill: 'forwards'})
   
   anim.finished.then(() => {
     card.style.transform = `translate(${x}px, ${y}px) scale(1) rotate(0deg)`
@@ -426,28 +438,22 @@ function strToHtml(str) {
   return DOM.body.childNodes[0]
 }
 
-function newCard(type, value = 0) {
-  var deckType = type
-  type = value == 13 ? "death" : value == 12 ? "shamrock" : type
+function newCard(type, value = 0, side = 'back') {
+  var cardtype = value == 13 ? "death" : value == 12 ? "shamrock" : type
+  var numeral = numerals[value]
+  var icon = icons[type]
 
-  var str = `<div class="card ${type}" deck="${deckType}">
-  <div class="bg">`
-
-  if (type.includes('back')) {
-    str += `<div class="pattern">`
-  }
-  else {
-    var numeral = numerals[value]
-    var icon = icons[type]
-
-    str += `<svg width="100%" height="100%">
+  var str = `<div class="card ${cardtype} ${side}" deck="${type}">
+  <div class="bg">
+  <svg width="100%" height="100%">
       <text class="value" x="6" y="17">${value}</text>
       <text class="numeral" x="50%" y="38%">${numeral}</text>
       <text class="icon" x="50%" y="75%">${icon}</text>
-    </svg>`
-  }
-
-  str += `</div></div>`
+    </svg>
+  </div>
+  <div class="${type}bg"></div>
+  <div class="pattern"></div>
+  </div>`
 
   return strToHtml(str)
 }

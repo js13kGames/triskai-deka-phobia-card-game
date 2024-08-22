@@ -46,7 +46,9 @@ text {
   filter: drop-shadow(8px 10px 2px #17171780);
 }
 
-.card .bg {
+.card .bg,
+.card .attackbg,
+.card .defensebg {
   width: 120px;
   height: 160px;
   border-radius: 10px;
@@ -109,6 +111,23 @@ text {
   border-radius: 10px;
   background: repeating-conic-gradient(from 45deg, rgba(0,0,0, 0) 0 25%, #af2563 0 50%);
   background-size: 30px 34px;
+}
+
+.card .attackbg {
+  background: #ff679b;
+}
+.card .defensebg {
+  background: #ffe415;
+}
+
+.card.back .bg {
+  display: none
+}
+
+.card.front .attackbg,
+.card.front .defensebg,
+.card.front .pattern {
+  display: none
 }
 
 .card.defense .pattern {
