@@ -12,7 +12,7 @@ body {
   height: 100%;
   background: repeating-conic-gradient(from 45deg, rgba(0,0,0, 0) 0 25%, #3770ea 0 50%);
   background-size: 70px 70px;
-  
+  overflow: hidden;
 }
 
 div, svg {

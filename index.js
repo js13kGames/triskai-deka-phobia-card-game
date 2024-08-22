@@ -6,11 +6,19 @@ var icons = {
   defense: '⛨'
 }
 
-var ctx = document.getElementById('ctx')
-var timer = document.getElementById('timer')
-var hands = document.getElementById('hands')
-var cpucircle = document.getElementById('cpucircle')
-var playercircle = document.getElementById('playercircle')
+var ctx = getElement('ctx')
+var timer = getElement('timer')
+var hands = getElement('hands')
+var cpuCircle = getElement('cpucircle')
+var cpuHpBar = getElement('cpuhpbar')
+var cpuActionBar = getElement('cpuactionbar')
+var playerCircle = getElement('playercircle')
+var playerHpBar = getElement('playerhpbar')
+var playerActionBar = getElement('playeractionbar')
+
+function getElement(id) {
+  return document.getElementById(id)
+}
 
 function add(element) {
   ctx.appendChild(element)
@@ -27,8 +35,8 @@ var TIMER_DURATION = 0.5 // seconds
 var SHOW_CARD_DURATION = 1
 var MOVE_CARD_DURATION = 0.6
 
-// Timer
-var timerDuration = 0.5 // seconds
+var HP_BAR_WIDTH = 352
+var AT_BAR_WIDTH = 352
 
 // Who's turn to pick a card
 // This is not related with action (attack) because it has own timer (AT)
@@ -36,22 +44,18 @@ var turn = 0 // 0 = Player, 1 = CPU
 var activeTime = false
 
 var playerNmae = 'Isoldee'
-var playerLv = 2
-
+var playerLv = 5
 var playerMaxHP = 50
 var playerHP = playerMaxHP // player health points
-
-var playerMaxAT = 10
-var playerAT = 0 // Player action timer
+var playerActionBarDuration = 10 // seconds
+var playerActionBarAnimation = null
 
 var cpuName = 'Shagaar'
-var cpuLv = 5
-
+var cpuLv = 2
 var cpuMaxHP = 50
 var cpuHP = cpuMaxHP // CPU health points
-
-var cpuMaxAT = 12
-var cpuAT = 0 // CPU action timer
+var cpuActionBarDuration = 13 // seconds
+var cpuActionBarAnimation = null
 
 // Cards to pick from
 var cardsInDeck = 7
@@ -71,19 +75,33 @@ var cpuDefenseHand = []
 window.onresize = resizeWindow;
 resizeWindow()
 
+var windowScale = 58
+
 function resizeWindow() {
   var wh = window.innerHeight
   var ch = ctx.offsetHeight
   var ww = window.innerWidth;
   var cw = ctx.offsetWidth
 
-  var s = Math.floor(wh / ch * 100)
+  var windowScale = Math.floor(wh / ch * 100)
   var x = (wh - ch) / 2
   var y = (ww - cw) / 2
 
-  ctx.style.transform = `scale(${s}%)`
+  ctx.style.transform = `scale(${windowScale}%)`
   ctx.style.top = `${x}px`
   ctx.style.left = `${y}px`
+}
+
+function screenShake() {
+  var shakeKeyframes = []
+  for(var i = 0; i < 10; i++) {
+    var x = Math.round(Math.random() * 6) - 3
+    var y = Math.round(Math.random() * 6) - 3
+    var a = Math.round(Math.random() * 2) - 1
+    shakeKeyframes.push({transform: `translate(${x}px, ${y}px) scale(${windowScale}%) rotate(${a}deg)`})
+  }
+
+  ctx.animate(shakeKeyframes, {duration: 500})
 }
 
 // Prepare timer animation
@@ -100,6 +118,11 @@ timer.appendChild(timerAnim)
 resetGame()
 
 function resetGame() {
+  playerHP = playerMaxHP
+  cpuHP = cpuMaxHP
+  refreshPlayerHpBar()
+  refreshCpuHpBar()
+
   removeAllCards()
   attackDeck = []
   defenseDeck = []
@@ -117,6 +140,8 @@ function resetGame() {
 
   addDecksIfEmpty()
   resetTimer()
+  resetCpuActionBar()
+  resetPlayerActionBar()
 }
 
 function removeAllCards() {
@@ -154,15 +179,97 @@ function toggleHands() {
 }
 
 function toggleCircles() {
-  cpucircle.classList.remove('active')
-  playercircle.classList.remove('active')
+  cpuCircle.classList.remove('active')
+  playerCircle.classList.remove('active')
 
   if(turn == 0) {
-    playercircle.classList.add('active')
+    playerCircle.classList.add('active')
   }
   else {
-    cpucircle.classList.add('active')
+    cpuCircle.classList.add('active')
   }
+}
+
+function resetPlayerActionBar() {
+  playerActionBarAnimation = playerActionBar.animate(
+    [{width: '0px'}, {width: `${AT_BAR_WIDTH}px`}],
+    {duration: playerActionBarDuration * 1000, fill: 'forwards'}
+  )
+
+  playerActionBarAnimation.finished.then(() => {
+    doPlayerAction()
+  })
+}
+
+function doPlayerAction() {
+  var playerAttackPoints = getHandActionPoints(playerAttackHand, playerLv)
+
+  if (playerAttackPoints > 0) {
+    var cpuDefensePoints = getHandActionPoints(cpuDefenseHand, cpuLv)
+    var hitPoints = playerAttackPoints - cpuDefensePoints
+
+    console.log('Player', playerAttackPoints, 'vs', 'CPU', cpuDefensePoints)
+
+    if(hitPoints < 0) {
+      hitPoints = 0
+    }
+
+    for(var i in playerAttackHand) {
+      var card = playerAttackHand[i]
+      card.style.zIndex = 500
+      var anim = card.animate(
+        [{transform: 'translate(475px, 185px) scale(0.75) rotate(-360deg)'}],
+        {duration: 800, fill: 'forwards'})
+
+      anim.finished.then(() => {
+        if (i == playerAttackHand.length - 1) {
+          cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
+
+          screenShake()
+          refreshCpuHpBar()
+          removeCardsFromHand(playerAttackHand)
+          removeCardsFromHand(cpuDefenseHand)
+
+          if(cpuHP == 0) {
+            console.log("CPU DEAD")
+            resetGame()
+          }
+          else {
+            resetPlayerActionBar()
+          }
+        }
+      })
+    }
+    
+  }
+  else {
+    resetPlayerActionBar()
+  }
+}
+
+function refreshPlayerHpBar() {
+  var width = Math.round(playerHP / playerMaxHP * HP_BAR_WIDTH)
+  playerHpBar.style.width = `${width}px`
+}
+
+function refreshCpuHpBar() {
+  var width = Math.round(cpuHP / cpuMaxHP * HP_BAR_WIDTH)
+  cpuHpBar.style.width = `${width}px`
+}
+
+function resetCpuActionBar() {
+  cpuActionBarAnimation = cpuActionBar.animate(
+    [{width: '0px'}, {width: `${AT_BAR_WIDTH}px`}],
+    {duration: cpuActionBarDuration * 1000, fill: 'forwards'}
+  )
+
+  cpuActionBarAnimation.finished.then(() => {
+    doCpuAction()
+  })
+}
+
+function doCpuAction() {
+  resetCpuActionBar()
 }
 
 function addShamrocks(quantity) {
@@ -257,6 +364,17 @@ function endTurn() {
   changeTurn()
   toggleHands()
   resetTimer()
+  resumeActionBars()
+}
+
+function pauseActionBars() {
+  playerActionBarAnimation.pause()
+  cpuActionBarAnimation.pause()
+}
+
+function resumeActionBars() {
+  playerActionBarAnimation.play()
+  cpuActionBarAnimation.play()
 }
 
 function playerPickCard() {
@@ -265,6 +383,7 @@ function playerPickCard() {
   }
 
   activeTime = false
+  pauseActionBars()
 
   if(this.classList.contains('attack')) {
     var c = attackDeck.pop()
@@ -327,6 +446,8 @@ function cpuPickCard() {
   }
 
   activeTime = false
+  pauseActionBars()
+
   var type = Math.round(Math.random(1))
   var deck = type == 0 ? attackDeck : defenseDeck
   var c = deck.pop()
@@ -426,6 +547,15 @@ function getHandPoints(theHand) {
   var v = 0
   for(var i in theHand) {
     v += theHand[i].getElementsByClassName("value")[0].textContent * 1
+  }
+
+  return v
+}
+
+function getHandActionPoints(theHand, multiplier) {
+  var v = 0
+  for(var i in theHand) {
+    v += theHand[i].getElementsByClassName("value")[0].textContent * (i + 1) * 0.5 * multiplier
   }
 
   return v
