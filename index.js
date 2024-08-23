@@ -47,6 +47,8 @@ var AT_BAR_WIDTH = 352
 // This is not related with action (attack) because it has own timer (AT)
 var turn = 0 // 0 = Player, 1 = CPU
 var activeTime = false
+var isActionTime = false
+var isCpuAction = false
 
 var playerName = 'Isoldee'
 var playerLv = 1
@@ -175,6 +177,9 @@ function resetGame() {
   cpuDefenseHand = []
 
   turn = 0
+  activeTime = false
+  isActionTime = false
+  isCpuAction = false
   toggleCircles()
 
   addShamrocks(SHAMROCKS_ON_START)
@@ -216,6 +221,11 @@ function onTimer() {
 }
 
 function CPU() {
+  if(isActionTime == true || isCpuAction == true) {
+    return false
+  }
+
+  isCpuAction = true
   setTimeout(() => { cpuPickCard() }, 500 + Math.floor(Math.random() * 1000))
 }
 
@@ -252,6 +262,8 @@ function resetPlayerActionBar() {
 
 function doPlayerAction() {
   pauseActionBars();
+  isActionTime = true;
+
   var playerAttackPoints = getHandActionPoints(playerAttackHand, playerLv)
 
   if (playerAttackPoints > 0) {
@@ -287,6 +299,8 @@ function doPlayerAction() {
           else {
             resumeActionBars()
             resetPlayerActionBar()
+            isActionTime = false
+            resumeCpu()
           }
         }
       })
@@ -295,6 +309,9 @@ function doPlayerAction() {
   }
   else {
     resetPlayerActionBar()
+    resumeActionBars()
+    resumeCpu()
+    isActionTime = false
   }
 }
 
@@ -319,8 +336,17 @@ function resetCpuActionBar() {
   })
 }
 
+function resumeCpu() {
+  if(turn == 1 && isCpuAction == false) {
+    CPU()
+  }
+}
+
 function doCpuAction() {
+  isActionTime = true
   resetCpuActionBar()
+  isActionTime = false
+  resumeCpu()
 }
 
 function addShamrocks(quantity) {
@@ -416,6 +442,10 @@ function endTurn() {
   toggleHands()
   resetTimer()
   resumeActionBars()
+
+  if(turn == 1 && isCpuAction == true) {
+    isCpuAction = false
+  }
 }
 
 function pauseActionBars() {
@@ -429,7 +459,7 @@ function resumeActionBars() {
 }
 
 function playerPickCard() {
-  if (turn == 1 || activeTime == false) {
+  if (turn == 1 || activeTime == false || isActionTime == true) {
     return false
   }
 
@@ -492,7 +522,7 @@ function playerPickCard() {
 }
 
 function cpuPickCard() {
-  if(turn == 0) {
+  if(turn == 0 || isActionTime == true) {
     return false
   }
 
