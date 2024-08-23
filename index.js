@@ -53,6 +53,7 @@ var isCpuAction = false
 var playerName = 'Isoldee'
 var playerLv = 1
 var playerMaxHP = 20
+var playerAttack = 2
 var playerHP = playerMaxHP // player health points
 var playerActionBarDuration = 10 // seconds
 var playerActionBarAnimation = null
@@ -60,6 +61,7 @@ var playerActionBarAnimation = null
 var cpuName = 'Shakhaar'
 var cpuLv = 1
 var cpuMaxHP = 10
+var cpuAttack = 2
 var cpuHP = cpuMaxHP // CPU health points
 var cpuActionBarDuration = 13 // seconds
 var cpuActionBarAnimation = null
@@ -265,47 +267,62 @@ function doPlayerAction() {
   isActionTime = true;
 
   var playerAttackPoints = getHandActionPoints(playerAttackHand, playerLv)
+  var cpuDefensePoints = getHandActionPoints(cpuDefenseHand, cpuLv)
+  var hitPoints = playerAttackPoints - cpuDefensePoints
 
-  if (playerAttackPoints > 0) {
-    var cpuDefensePoints = getHandActionPoints(cpuDefenseHand, cpuLv)
-    var hitPoints = playerAttackPoints - cpuDefensePoints
+  hitPoints = playerAttack + (hitPoints < 0 ? 0 : hitPoints)
 
+  if (hitPoints > 0) {
     console.log('Player', playerAttackPoints, 'vs', 'CPU', cpuDefensePoints)
+    console.log('Hit points', hitPoints)
 
-    if(hitPoints < 0) {
-      hitPoints = 0
+    if(playerAttackHand.length == 0) {
+      cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
+      screenShake()
+      refreshCpuHpBar()
+
+      if(cpuHP == 0) {
+        console.log("CPU DEAD")
+        resetGame()
+      }
+      else {
+        resumeActionBars()
+        resetPlayerActionBar()
+        isActionTime = false
+        resumeCpu()
+      }
     }
-
-    for(var i in playerAttackHand) {
-      var card = playerAttackHand[i]
-      card.style.zIndex = 500
-      var anim = card.animate(
-        [{transform: 'translate(475px, 185px) scale(0.75) rotate(-360deg)'}],
-        {duration: 800, fill: 'forwards'})
-
-      anim.finished.then(() => {
-        if (i == playerAttackHand.length - 1) {
-          cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
-
-          screenShake()
-          refreshCpuHpBar()
-          removeCardsFromHand(playerAttackHand)
-          removeCardsFromHand(cpuDefenseHand)
-
-          if(cpuHP == 0) {
-            console.log("CPU DEAD")
-            resetGame()
+    else {
+      for(var i in playerAttackHand) {
+        var card = playerAttackHand[i]
+        card.style.zIndex = 500
+        var anim = card.animate(
+          [{transform: 'translate(475px, 185px) scale(0.75) rotate(-360deg)'}],
+          {duration: 800, fill: 'forwards'})
+  
+        anim.finished.then(() => {
+          if (i == playerAttackHand.length - 1) {
+            cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
+  
+            screenShake()
+            refreshCpuHpBar()
+            removeCardsFromHand(playerAttackHand)
+            removeCardsFromHand(cpuDefenseHand)
+  
+            if(cpuHP == 0) {
+              console.log("CPU DEAD")
+              resetGame()
+            }
+            else {
+              resumeActionBars()
+              resetPlayerActionBar()
+              isActionTime = false
+              resumeCpu()
+            }
           }
-          else {
-            resumeActionBars()
-            resetPlayerActionBar()
-            isActionTime = false
-            resumeCpu()
-          }
-        }
-      })
+        })
+      }
     }
-    
   }
   else {
     resetPlayerActionBar()
