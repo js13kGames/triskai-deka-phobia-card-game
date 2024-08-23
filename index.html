@@ -33,6 +33,23 @@
     <svg width="100%" height="100%" style="position: absolute">
       <!-- Portrait -->
       <circle class="portrait" id="cpucircle" cx="580" cy="125" r="120" stroke-width="3" />
+      <g transform="translate(485 30) scale(0.8)">
+        <path class="outerbody" d="M 110 30 Q 200 30 210 160 Q 210 210 120 210 Q 20 210 30 140 Q 60 30 110 30" fill="#6dd6fd" />
+        <path class="innerbody" d="M 110 45 Q 195 35 205 160 Q 210 210 120 210 Q 25 205 40 135 Q 70 40 110 45" fill="#329fdc" />
+        <circle class="outerbody" cx="100" cy="70" r="20" fill="#6dd6fd" transform="scale(1 0.8)" />
+        <circle class="glow" cx="102" cy="59" r="10" fill="white" />
+      
+        <circle class="eye" r="20" fill="#6dd6fd" transform="rotate(25) translate(113 70) scale(0.6 1)" />
+        <circle class="eye" r="20" fill="#053c5f" transform="rotate(25) translate(110 70) scale(0.6 1)" />
+        <circle class="retina" cx="75" cy="105" r="6" fill="white" />
+      
+        <circle class="eye" r="20" fill="#6dd6fd" transform="rotate(-20) translate(128 160) scale(0.6 1)" />
+        <circle class="eye" r="20" fill="#053c5f" transform="rotate(-20) translate(125 160) scale(0.6 1)" />
+        <circle class="retina" cx="170" cy="105" r="6" fill="white" />
+      
+        <circle class="mouth" r="30" fill="#6dd6fd" transform="rotate(30) translate(203 88) scale(0.5 1)" />
+        <circle class="mouth" r="30" fill="#053c5f" transform="rotate(30) translate(200 85) scale(0.5 1)" />
+      </g>
       <!-- Name -->
       <text id="cpuinfo" class="name" x="18" y="55">CPU</text>
       <!-- Health bar area -->
