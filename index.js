@@ -39,9 +39,22 @@ var TIMER_DURATION = 0.5 // seconds
 var SHOW_CARD_DURATION = 0.5
 var SHOW_CARD_DELAY = 1
 var MOVE_CARD_DURATION = 0.4
+var DEATH_DURATION = 3
 
 var HP_BAR_WIDTH = 352
 var AT_BAR_WIDTH = 352
+
+var sfxPick = [,,313,.02,.02,.02,1,2.4,-30,,-247,.08,,,,,,.98,.03]
+var sfxMove = [.4,,243,.01,.05,.19,,.2,,90,,,,.1,,,,.56,.05,,100]
+var sfxHit = [1.1,,101,.03,.05,.25,4,.6,,2,,,.04,1.3,,.1,,.75,.04,.19]
+var sfxVanish = [,,229,.05,.21,.09,1,1.3,,,,,.03,,3.8,.1,,.56,.3,.43,305]
+var sfxLuck = [5,,593,.03,.23,.3,,3.1,,,290,.08,.07,,,.1,,.65,.27,.12,-1406]
+var sfxDeath = [,,418,.06,.28,.35,,2,-7,-104,-57,.1,.01,,,,,.93,.26]
+var sfxWin = [1.8,,417,,.3,.05,3,2.7,-3,,373,.35,,.1,,,.3,.63,.09,.37]
+
+function playSound(sfx) {
+  zzfx(...sfx)
+}
 
 // Who's turn to pick a card
 // This is not related with action (attack) because it has own timer (AT)
@@ -265,6 +278,7 @@ function resetPlayerActionBar() {
 function doPlayerAction() {
   pauseActionBars();
   isActionTime = true;
+  playSound(sfxPick)
 
   var playerAttackPoints = getHandActionPoints(playerAttackHand, playerLv)
   var cpuDefensePoints = getHandActionPoints(cpuDefenseHand, cpuLv)
@@ -273,17 +287,16 @@ function doPlayerAction() {
   hitPoints = playerAttack + (hitPoints < 0 ? 0 : hitPoints)
 
   if (hitPoints > 0) {
-    console.log('Player', playerAttackPoints, 'vs', 'CPU', cpuDefensePoints)
-    console.log('Hit points', hitPoints)
-
     if(playerAttackHand.length == 0) {
       cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
+      playSound(sfxHit)
       screenShake()
       refreshCpuHpBar()
 
       if(cpuHP == 0) {
         console.log("CPU DEAD")
-        resetGame()
+        playSound(sfxWin)
+        setTimeout(resetGame, DEATH_DURATION * 1000)
       }
       else {
         resumeActionBars()
@@ -303,7 +316,7 @@ function doPlayerAction() {
         anim.finished.then(() => {
           if (i == playerAttackHand.length - 1) {
             cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
-  
+            zzfx(...sfxHit)
             screenShake()
             refreshCpuHpBar()
             removeCardsFromHand(playerAttackHand)
@@ -311,7 +324,8 @@ function doPlayerAction() {
   
             if(cpuHP == 0) {
               console.log("CPU DEAD")
-              resetGame()
+              playSound(sfxWin)
+              setTimeout(resetGame, DEATH_DURATION * 1000)
             }
             else {
               resumeActionBars()
@@ -441,6 +455,7 @@ function showCard(card, move, end) {
 }
 
 function moveToHand(card, x, y, z, end) {
+  playSound(sfxMove)
   card.style.zIndex = z
 
   var anim = card.animate([
@@ -482,6 +497,7 @@ function playerPickCard() {
 
   activeTime = false
   pauseActionBars()
+  playSound(sfxPick)
 
   if(this.classList.contains('attack')) {
     var c = attackDeck.pop()
@@ -524,6 +540,7 @@ function playerPickCard() {
 
     showCard(c, () => { moveToHand(c, x, y, l, () => {
         playerLuckyHand.push(c)
+        playSound(sfxLuck)
         endTurn()
       })}
     )
@@ -545,6 +562,7 @@ function cpuPickCard() {
 
   activeTime = false
   pauseActionBars()
+  playSound(sfxPick)
 
   var type = Math.round(Math.random(1))
   var deck = type == 0 ? attackDeck : defenseDeck
@@ -558,6 +576,7 @@ function cpuPickCard() {
     showCard(c, () => { moveToHand(c, x, y, l, () => {
         cpuAttackHand.push(c)
         c.style.display = 'none'
+        flushHandIfNeeded(cpuAttackHand)
         endTurn()
       })}
     )
@@ -566,6 +585,7 @@ function cpuPickCard() {
     showCard(c, () => { moveToHand(c, x, y, l, () => {
         cpuDefenseHand.push(c)
         c.style.display = 'none'
+        flushHandIfNeeded(cpuDefenseHand)
         endTurn()
       })}
     )
@@ -574,6 +594,7 @@ function cpuPickCard() {
     showCard(c, () => { moveToHand(c, x, y, l, () => {
         cpuLuckyHand.push(c)
         c.style.display = 'none'
+        playSound(sfxLuck)
         endTurn()
       })}
     )
@@ -590,17 +611,20 @@ function playerUseShamrockOrDie(deathCard, luckyHand) {
     if(IMMORTALS) {
       // move to lucky hand and remove
       moveToHand(deathCard, 297, 810, 500, () => {
+        playSound(sfxLuck)
         deathCard.remove()
         endTurn()
       })
     }
     else {
-      setTimeout(resetGame, 2000)
+      playSound(sfxDeath)
+      setTimeout(resetGame, DEATH_DURATION * 1000)
     }
   }
   else {
     moveToHand(deathCard, 297, 810, 500, () => {
       var shamrock = luckyHand.pop()
+      playSound(sfxLuck)
       shamrock.remove()
       deathCard.remove()
       endTurn()
@@ -612,17 +636,21 @@ function cpuUseShamrockOrDie(deathCard, luckyHand) {
   if(luckyHand.length == 0) {
     if(IMMORTALS) {
       moveToHand(deathCard, 475, 185, 50, () => {
+        playSound(sfxLuck)
         deathCard.remove()
         endTurn()
       })
     }
     else {
-      setTimeout(resetGame, 2000)
+      console.log('CPU DEAD')
+      playSound(sfxWin)
+      setTimeout(resetGame, DEATH_DURATION * 1000)
     }
   }
   else {
     moveToHand(deathCard, 475, 185, 50, () => {
       var shamrock = luckyHand.pop()
+      playSound(sfxLuck)
       shamrock.remove()
       deathCard.remove()
       endTurn()
@@ -663,6 +691,7 @@ function flushHandIfNeeded(theHand) {
   var points = getHandPoints(theHand)
 
   if(points >= 13) {
+    playSound(sfxVanish)
     removeCardsFromHand(theHand)
   }
 }
