@@ -36,8 +36,9 @@ var IMMORTALS = false
 var SHAMROCK_AND_DEATH_TEST = false
 
 var TIMER_DURATION = 0.5 // seconds
-var SHOW_CARD_DURATION = 1
-var MOVE_CARD_DURATION = 0.6
+var SHOW_CARD_DURATION = 0.5
+var SHOW_CARD_DELAY = 1
+var MOVE_CARD_DURATION = 0.4
 
 var HP_BAR_WIDTH = 352
 var AT_BAR_WIDTH = 352
@@ -384,14 +385,14 @@ function showCard(card, move, end) {
       card.classList.remove('back')
       card.classList.add('front')
     }
-  }, 100)
+  }, SHOW_CARD_DURATION * 1000 / 2)
   
   
-  var a1 = card.animate([
+  var anim = card.animate([
       {transform: 'translate(300px, 450px) scale(1.5)'}
-    ], {duration: SHOW_CARD_DURATION * 1000, fill: 'forwards'})
+    ], {duration: SHOW_CARD_DURATION * 1000, easing: 'ease-out', endDelay: SHOW_CARD_DELAY * 1000, fill: 'forwards'})
 
-  a1.finished.then(() => {
+  anim.finished.then(() => {
     move(card, end)
   })
 }
@@ -401,7 +402,7 @@ function moveToHand(card, x, y, z, end) {
 
   var anim = card.animate([
         {transform: `translate(${x}px, ${y}px) scale(1) rotate(360deg)`},
-      ], {duration: MOVE_CARD_DURATION * 1000, fill: 'forwards'})
+      ], {duration: MOVE_CARD_DURATION * 1000, easing: 'ease-out', fill: 'forwards'})
   
   anim.finished.then(() => {
     card.style.transform = `translate(${x}px, ${y}px) scale(1) rotate(0deg)`
