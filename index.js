@@ -1,10 +1,5 @@
 var numerals = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII']
-var icons = {
-  death: '🕱',
-  shamrock: '☘',
-  attack: '⚔',
-  defense: '⛨'
-}
+var icons = { death: '🕱', shamrock: '☘', attack: '⚔', defense: '⛨'}
 
 var ctx = getElement('ctx')
 var timer = getElement('timer')
@@ -28,12 +23,10 @@ function add(element) {
   ctx.appendChild(element)
 }
 
-// Number of shamrocks that Player will have from the beginning
-var SHAMROCKS_ON_START = 1
-// If enabled then CPU and player are immortal
-var IMMORTALS = false
-// If enabled then the deck have only shamrocks and deaths
-var SHAMROCK_AND_DEATH_TEST = false
+
+var SHAMROCKS_ON_START = 1 // Number of shamrocks that Player will have from the beginning
+var IMMORTALS = false // If enabled then CPU and player are immortal
+var SHAMROCK_AND_DEATH_TEST = false // If enabled then the deck have only shamrocks and deaths
 
 var TIMER_DURATION = 0.5 // seconds
 var SHOW_CARD_DURATION = 0.5
@@ -59,10 +52,12 @@ function playSound(sfx) {
 // Who's turn to pick a card
 // This is not related with action (attack) because it has own timer (AT)
 var turn = 0 // 0 = Player, 1 = CPU
+// Bnuch of flags to control who can do what
 var activeTime = false
 var isActionTime = false
 var isCpuAction = false
 
+// Player
 var playerName = 'Isoldee'
 var playerLv = 1
 var playerMaxHP = 20
@@ -71,6 +66,7 @@ var playerHP = playerMaxHP // player health points
 var playerActionBarDuration = 10 // seconds
 var playerActionBarAnimation = null
 
+// CPU
 var cpuName = 'Shakhaar'
 var cpuLv = 1
 var cpuMaxHP = 10
@@ -94,7 +90,8 @@ var cpuAttackHand = []
 var cpuLuckyHand = []
 var cpuDefenseHand = []
 
-var enemyParams = [
+// Enemy types
+var enemyType = [
   {
     name: 'Green Slime',
     minLv: 1,
@@ -127,10 +124,9 @@ var enemyParams = [
   }
 ]
 
+var windowScale = 1
 window.onresize = resizeWindow;
 resizeWindow()
-
-var windowScale = 58
 
 function resizeWindow() {
   var wh = window.innerHeight
@@ -138,7 +134,7 @@ function resizeWindow() {
   var ww = window.innerWidth;
   var cw = ctx.offsetWidth
 
-  var windowScale = Math.floor(wh / ch * 100)
+  windowScale = Math.floor(wh / ch * 100)
   var x = (wh - ch) / 2
   var y = (ww - cw) / 2
 
@@ -149,6 +145,7 @@ function resizeWindow() {
 
 function screenShake() {
   var shakeKeyframes = []
+  
   for(var i = 0; i < 10; i++) {
     var x = Math.round(Math.random() * 6) - 3
     var y = Math.round(Math.random() * 6) - 3
