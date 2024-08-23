@@ -211,7 +211,7 @@ function updateCpuInfo() {
 }
 
 function removeAllCards() {
-  const cards = document.querySelectorAll('.card');
+  var cards = document.querySelectorAll('.card');
   cards.forEach(card => {
     card.remove()
   })
@@ -232,17 +232,20 @@ function onTimer() {
   }
 }
 
+var cpuMoveTimout = null
+
 function CPU() {
-  if(isActionTime == true || isCpuAction == true) {
+  if(isActionTime == true) {
     return false
   }
 
   isCpuAction = true
-  setTimeout(() => { cpuPickCard() }, 500 + Math.floor(Math.random() * 1000))
+  clearTimeout(cpuMoveTimout)
+  cpuMoveTimout = setTimeout(() => { cpuPickCard() }, 500 + Math.floor(Math.random() * 1000))
 }
 
 function resumeCpu() {
-  if(turn == 1 && isCpuAction == false) {
+  if(turn == 1 && isActionTime == false) {
     CPU()
   }
 }
