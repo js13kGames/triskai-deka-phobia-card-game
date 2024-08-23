@@ -1,4 +1,3 @@
-'use strict';
 let // ZzFXMicro - Zuper Zmall Zound Zynth - v1.3.1 by Frank Force ~ 1000 bytes
 zzfxV=.3,               // volume
 zzfxX=new AudioContext, // audio context
