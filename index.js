@@ -241,6 +241,12 @@ function CPU() {
   setTimeout(() => { cpuPickCard() }, 500 + Math.floor(Math.random() * 1000))
 }
 
+function resumeCpu() {
+  if(turn == 1 && isCpuAction == false) {
+    CPU()
+  }
+}
+
 function changeTurn() {
   turn = (turn + 1) % 2
 }
@@ -370,12 +376,6 @@ function resetCpuActionBar() {
   cpuActionBarAnimation.finished.then(() => {
     doCpuAction()
   })
-}
-
-function resumeCpu() {
-  if(turn == 1 && isCpuAction == false) {
-    CPU()
-  }
 }
 
 // CPU action when action bar is full
@@ -644,6 +644,15 @@ function cpuPickCard() {
 
   var type = Math.round(Math.random(1))
   var deck = type == 0 ? attackDeck : defenseDeck
+
+  var attackDeckPoints = getHandPoints(cpuAttackHand)
+  var defenseDeckPoints = getHandPoints(cpuDefenseHand)
+
+  // Select defense card if it has lower points than attack hand
+  if(defenseDeckPoints < attackDeckPoints) {
+    deck = defenseDeck
+  }
+  
   var c = deck.pop()
 
   var x = 475
