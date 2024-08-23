@@ -291,9 +291,12 @@ function doPlayerAction() {
       playSound(sfxHit)
       screenShake()
       refreshCpuHpBar()
+      removeCardsFromHand(cpuDefenseHand)
 
       if(cpuHP == 0) {
         console.log("CPU DEAD")
+        cpuHP = 0
+        refreshCpuHpBar()
         playSound(sfxWin)
         setTimeout(resetGame, DEATH_DURATION * 1000)
       }
@@ -324,6 +327,8 @@ function doPlayerAction() {
   
             if(cpuHP == 0) {
               console.log("CPU DEAD")
+              cpuHP = 0
+              refreshCpuHpBar()
               playSound(sfxWin)
               setTimeout(resetGame, DEATH_DURATION * 1000)
             }
@@ -392,9 +397,12 @@ function doCpuAction() {
       playSound(sfxHit)
       screenShake()
       refreshPlayerHpBar()
+      removeCardsFromHand(playerDefenseHand)
 
       if(playerHP == 0) {
         console.log("PLAYER DEAD")
+        playerHP = 0
+        refreshPlayerHpBar()
         playSound(sfxDeath)
         setTimeout(resetGame, DEATH_DURATION * 1000)
       }
@@ -426,6 +434,8 @@ function doCpuAction() {
   
             if(playerHP == 0) {
               console.log("PLAYER DEAD")
+              playerHP = 0
+              refreshPlayerHpBar()
               playSound(sfxDeath)
               setTimeout(resetGame, DEATH_DURATION * 1000)
             }
@@ -685,6 +695,9 @@ function playerUseShamrockOrDie(deathCard, luckyHand) {
       })
     }
     else {
+      console.log('PLAYER DEAD')
+      playerHP = 0
+      refreshPlayerHpBar()
       playSound(sfxDeath)
       setTimeout(resetGame, DEATH_DURATION * 1000)
     }
@@ -711,6 +724,8 @@ function cpuUseShamrockOrDie(deathCard, luckyHand) {
     }
     else {
       console.log('CPU DEAD')
+      cpuHP = 0
+      refreshCpuHpBar()
       playSound(sfxWin)
       setTimeout(resetGame, DEATH_DURATION * 1000)
     }
