@@ -412,7 +412,7 @@ function doCpuAction() {
         card.style.display = 'block'
         card.style.zIndex = 500
         var anim = card.animate(
-          [{transform: 'translate(100px, 1100px) scale(0.75) rotate(-360deg)'}],
+          [{transform: 'translate(100px, 1000px) scale(0.75) rotate(-360deg)'}],
           {duration: 800, fill: 'forwards'})
   
         anim.finished.then(() => {
@@ -503,7 +503,7 @@ function addDecksIfEmpty() {
 function showCard(card, move, end) {
   hands.style.display = 'none'
 
-  card.style.zIndex = 100
+  card.style.zIndex = 500
 
   setTimeout(function() {
     if(card.classList.contains('back')) {
