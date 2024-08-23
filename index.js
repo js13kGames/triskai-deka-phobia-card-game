@@ -145,7 +145,7 @@ function resizeWindow() {
 
 function screenShake() {
   var shakeKeyframes = []
-  
+
   for(var i = 0; i < 10; i++) {
     var x = Math.round(Math.random() * 6) - 3
     var y = Math.round(Math.random() * 6) - 3
@@ -272,9 +272,10 @@ function resetPlayerActionBar() {
   })
 }
 
+// Player action when action bar is full
 function doPlayerAction() {
-  pauseActionBars();
   isActionTime = true;
+  pauseActionBars();
   playSound(sfxPick)
 
   var playerAttackPoints = getHandActionPoints(playerAttackHand, playerLv)
@@ -284,6 +285,7 @@ function doPlayerAction() {
   hitPoints = playerAttack + (hitPoints < 0 ? 0 : hitPoints)
 
   if (hitPoints > 0) {
+    // Player have no cards in attack hand
     if(playerAttackHand.length == 0) {
       cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
       playSound(sfxHit)
@@ -302,6 +304,7 @@ function doPlayerAction() {
         resumeCpu()
       }
     }
+    // Player have cards in attack hand
     else {
       for(var i in playerAttackHand) {
         var card = playerAttackHand[i]
@@ -313,7 +316,7 @@ function doPlayerAction() {
         anim.finished.then(() => {
           if (i == playerAttackHand.length - 1) {
             cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
-            zzfx(...sfxHit)
+            playSound(sfxHit)
             screenShake()
             refreshCpuHpBar()
             removeCardsFromHand(playerAttackHand)
@@ -338,8 +341,8 @@ function doPlayerAction() {
   else {
     resetPlayerActionBar()
     resumeActionBars()
-    resumeCpu()
     isActionTime = false
+    resumeCpu()
   }
 }
 
@@ -370,11 +373,79 @@ function resumeCpu() {
   }
 }
 
+// CPU action when action bar is full
 function doCpuAction() {
-  isActionTime = true
-  resetCpuActionBar()
-  isActionTime = false
-  resumeCpu()
+  isActionTime = true;
+  pauseActionBars();
+  playSound(sfxPick)
+
+  var cpuAttackPoints = getHandActionPoints(cpuAttackHand, cpuLv)
+  var playerDefensePoints = getHandActionPoints(playerDefenseHand, playerLv)
+  var hitPoints = cpuAttackPoints - playerDefensePoints
+
+  hitPoints = cpuAttack + (hitPoints < 0 ? 0 : hitPoints)
+
+  if (hitPoints > 0) {
+    // CPU have no cards in attack hand
+    if(cpuAttackHand.length == 0) {
+      playerHP = playerHP - hitPoints < 0 ? 0 : playerHP - hitPoints
+      playSound(sfxHit)
+      screenShake()
+      refreshPlayerHpBar()
+
+      if(playerHP == 0) {
+        console.log("PLAYER DEAD")
+        playSound(sfxDeath)
+        setTimeout(resetGame, DEATH_DURATION * 1000)
+      }
+      else {
+        resetCpuActionBar()
+        resumeActionBars()
+        isActionTime = false
+        resumeCpu()
+      }
+    }
+    // CPU have cards in attack hand
+    else {
+      for(var i in cpuAttackHand) {
+        var card = cpuAttackHand[i]
+        card.style.display = 'block'
+        card.style.zIndex = 500
+        var anim = card.animate(
+          [{transform: 'translate(100px, 1100px) scale(0.75) rotate(-360deg)'}],
+          {duration: 800, fill: 'forwards'})
+  
+        anim.finished.then(() => {
+          if (i == cpuAttackHand.length - 1) {
+            playerHP = playerHP - hitPoints < 0 ? 0 : playerHP - hitPoints
+            playSound(sfxHit)
+            screenShake()
+            refreshPlayerHpBar()
+            removeCardsFromHand(cpuAttackHand)
+            removeCardsFromHand(playerDefenseHand)
+  
+            if(playerHP == 0) {
+              console.log("PLAYER DEAD")
+              playSound(sfxDeath)
+              setTimeout(resetGame, DEATH_DURATION * 1000)
+            }
+            else {
+              resumeActionBars()
+              resetCpuActionBar()
+              isActionTime = false
+              resumeCpu()
+            }
+          }
+        })
+      }
+    }
+  }
+  else {
+    resetCpuActionBar()
+    resumeActionBars()
+    isActionTime = false
+    resumeCpu()
+  }
 }
 
 function addShamrocks(quantity) {
