@@ -25,7 +25,7 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 # Known issues #
 
 * Sometimes (pretty often) after some action (dunno when but probably combination of turn change and action bar action) it is a CPU turn but he doesn't do anything. Probably something with timeouts and action flags.
-* Sometimes defense card have incorrect pattern color (probably Shamrock card)
+* FIXED // Sometimes defense card have incorrect pattern color (probably Shamrock card)
 
 # Credits #
 

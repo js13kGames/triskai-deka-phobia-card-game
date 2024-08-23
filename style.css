@@ -109,8 +109,7 @@ text {
   width: 120px;
   height: 160px;
   border-radius: 10px;
-  background: repeating-conic-gradient(from 45deg, rgba(0,0,0, 0) 0 25%, #af2563 0 50%);
-  background-size: 30px 34px;
+  
 }
 
 .card .attackbg {
@@ -130,7 +129,12 @@ text {
   display: none
 }
 
-.card.defense .pattern {
+.pattern.attack {
+  background: repeating-conic-gradient(from 45deg, rgba(0,0,0, 0) 0 25%, #af2563 0 50%);
+  background-size: 30px 34px;
+}
+
+.pattern.defense {
   background: repeating-conic-gradient(from 45deg, rgba(0,0,0, 0) 0 25%, #e27f1b 0 50%);
   background-size: 30px 34px;
 }

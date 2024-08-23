@@ -816,7 +816,7 @@ function newCard(type, value = 0, side = 'back') {
     </svg>
   </div>
   <div class="${type}bg"></div>
-  <div class="pattern"></div>
+  <div class="pattern ${type}"></div>
   </div>`
 
   return strToHtml(str)
