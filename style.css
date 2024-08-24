@@ -38,8 +38,8 @@ text {
 .card {
   position: absolute;
   display: block;
-  width: 120;
-  height: 160;
+  width: 120px;
+  height: 160px;
   background: #fff;
   border-radius: 12px;
   padding: 5px;
@@ -217,8 +217,6 @@ text.info {
   fill: #fff;
   font-size: 128px;
 }
-
-#hands {  display: none; }
 
 .hand {
   position: absolute;

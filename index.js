@@ -53,9 +53,7 @@ function playSound(sfx) {
 // This is not related with action (attack) because it has own timer (AT)
 var turn = 0 // 0 = Player, 1 = CPU
 // Bnuch of flags to control who can do what
-var activeTime = false
 var isActionTime = false
-var isCpuAction = false
 
 // Player
 var playerName = 'Isoldee'
@@ -189,9 +187,7 @@ function resetGame() {
   cpuDefenseHand = []
 
   turn = 0
-  activeTime = false
   isActionTime = false
-  isCpuAction = false
   toggleCircles()
 
   addShamrocks(SHAMROCKS_ON_START)
@@ -222,8 +218,8 @@ function resetTimer() {
 }
 
 function onTimer() {
-  activeTime = turn == 0 ? true : false
-
+  console.log('onTimer')
+  console.log(timerAnim)
   toggleCircles()
   toggleHands()
 
@@ -235,11 +231,11 @@ function onTimer() {
 var cpuMoveTimout = null
 
 function CPU() {
+  console.log('CPU', 'isActionTime', isActionTime)
   if(isActionTime == true) {
     return false
   }
 
-  isCpuAction = true
   clearTimeout(cpuMoveTimout)
   cpuMoveTimout = setTimeout(() => { cpuPickCard() }, 500 + Math.floor(Math.random() * 1000))
 }
@@ -255,7 +251,7 @@ function changeTurn() {
 }
 
 function toggleHands() {
-  hands.style.display = turn == 0 && activeTime == true ? 'block' : 'none'
+  hands.style.display = turn == 0 ? "block" : "none"
 }
 
 function toggleCircles() {
@@ -514,7 +510,7 @@ function addDecksIfEmpty() {
 }
 
 function showCard(card, move, end) {
-  hands.style.display = 'none'
+  hands.style.display = "none"
 
   card.style.zIndex = 500
 
@@ -549,18 +545,6 @@ function moveToHand(card, x, y, z, end) {
   })
 }
 
-function endTurn() {
-  addDecksIfEmpty()
-  changeTurn()
-  toggleHands()
-  resetTimer()
-  resumeActionBars()
-
-  if(turn == 1 && isCpuAction == true) {
-    isCpuAction = false
-  }
-}
-
 function pauseActionBars() {
   playerActionBarAnimation.pause()
   cpuActionBarAnimation.pause()
@@ -571,12 +555,21 @@ function resumeActionBars() {
   cpuActionBarAnimation.play()
 }
 
+function endTurn() {
+  console.log('endTurn')
+  addDecksIfEmpty()
+  changeTurn()
+  toggleHands()
+  resetTimer()
+  resumeActionBars()
+}
+
 function playerPickCard() {
+  var activeTime = hands.style.display == "none" ? false : true
   if (turn == 1 || activeTime == false || isActionTime == true) {
     return false
   }
 
-  activeTime = false
   pauseActionBars()
   playSound(sfxPick)
 
@@ -641,7 +634,6 @@ function cpuPickCard() {
     return false
   }
 
-  activeTime = false
   pauseActionBars()
   playSound(sfxPick)
 
