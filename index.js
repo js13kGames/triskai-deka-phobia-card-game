@@ -161,7 +161,6 @@ timerAnim.setAttribute("from", 360)
 timerAnim.setAttribute("to", 0);
 timerAnim.setAttribute("dur", `${TIMER_DURATION}s`)
 timerAnim.setAttribute("fill", "forwards")
-//timerAnim.onend = onTimer
 timer.appendChild(timerAnim)
 
 /* START GAME */

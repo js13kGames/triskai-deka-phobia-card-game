@@ -1,6 +1,6 @@
 html, body {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
 }
 
 html {
@@ -10,7 +10,8 @@ html {
 body {
   width: 100vw;
   height: 100vh;
-  background-image: url('./bg.svg');
+  background: repeating-conic-gradient(from 45deg, rgba(0,0,0, 0) 0 25%, #3770ea 0 50%);
+  background-size: 70px 70px;
   overflow: hidden;
 }
 
@@ -25,7 +26,6 @@ div, svg {
   width: 730px;
   height: 1270px;
   overflow: hidden;
-  border-radius: 10px;
 }
 
 
@@ -229,9 +229,9 @@ text.info {
 }
 
 @keyframes hand {
-  0% {translate: 40px 0}
-  15% {translate: 0 0}
-  100% {translate: 40px 0}
+  0% {translate: 40px 0px}
+  15% {translate: 0px 0px}
+  100% {translate: 40px 0px}
 }
 
 circle.portrait {
