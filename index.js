@@ -122,23 +122,23 @@ var enemyType = [
   }
 ]
 
-var windowScale = 1
+var scale = 1
 window.onresize = resizeWindow;
 resizeWindow()
 
 function resizeWindow() {
-  var wh = window.innerHeight
-  var ch = ctx.offsetHeight
-  var ww = window.innerWidth;
-  var cw = ctx.offsetWidth
+  var availableWidth = window.innerWidth
+  var availableHeight = window.innerHeight
+  var contentWidth = ctx.offsetWidth
+  var contentHeight = ctx.offsetHeight
+  
+  scale = Math.min(availableWidth / contentWidth, availableHeight / contentHeight)
+  ctx.style.transform = `scale(${scale})`
 
-  windowScale = Math.floor(wh / ch * 100)
-  var x = (wh - ch) / 2
-  var y = (ww - cw) / 2
-
-  ctx.style.transform = `scale(${windowScale}%)`
-  ctx.style.top = `${x}px`
-  ctx.style.left = `${y}px`
+  var x = (availableWidth - contentWidth) / 2
+  var y = (availableHeight - contentHeight) / 2
+  ctx.style.left = `${x}px`
+  ctx.style.top = `${y}px`
 }
 
 function screenShake() {
@@ -148,7 +148,7 @@ function screenShake() {
     var x = Math.round(Math.random() * 6) - 3
     var y = Math.round(Math.random() * 6) - 3
     var a = Math.round(Math.random() * 2) - 1
-    shakeKeyframes.push({transform: `translate(${x}px, ${y}px) scale(${windowScale}%) rotate(${a}deg)`})
+    shakeKeyframes.push({transform: `translate(${x}px, ${y}px) scale(${scale}) rotate(${a}deg)`})
   }
 
   ctx.animate(shakeKeyframes, {duration: 500})
@@ -161,7 +161,7 @@ timerAnim.setAttribute("from", 360)
 timerAnim.setAttribute("to", 0);
 timerAnim.setAttribute("dur", `${TIMER_DURATION}s`)
 timerAnim.setAttribute("fill", "forwards")
-timerAnim.onend = onTimer
+//timerAnim.onend = onTimer
 timer.appendChild(timerAnim)
 
 /* START GAME */
@@ -213,13 +213,15 @@ function removeAllCards() {
   })
 }
 
+var turnTimer = null
+
 function resetTimer() {
   timerAnim.beginElement()
+  clearTimeout(turnTimer)
+  turnTimer = setTimeout(onTimer, TIMER_DURATION * 1000)
 }
 
 function onTimer() {
-  console.log('onTimer')
-  console.log(timerAnim)
   toggleCircles()
   toggleHands()
 
@@ -231,7 +233,6 @@ function onTimer() {
 var cpuMoveTimout = null
 
 function CPU() {
-  console.log('CPU', 'isActionTime', isActionTime)
   if(isActionTime == true) {
     return false
   }
@@ -556,7 +557,6 @@ function resumeActionBars() {
 }
 
 function endTurn() {
-  console.log('endTurn')
   addDecksIfEmpty()
   changeTurn()
   toggleHands()
