@@ -24,7 +24,7 @@ function add(element) {
 }
 
 
-var SHAMROCKS_ON_START = 1 // Number of shamrocks that Player will have from the beginning
+var SHAMROCKS_ON_START = 0 // Number of shamrocks that Player will have from the beginning
 var IMMORTALS = false // If enabled then CPU and player are immortal
 var SHAMROCK_AND_DEATH_TEST = false // If enabled then the deck have only shamrocks and deaths
 
