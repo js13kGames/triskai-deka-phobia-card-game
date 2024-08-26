@@ -7,11 +7,10 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 
 # To do / ideas #
 
-* Background as SVG image
 * Change icons (swords, shield, shamrock, death, app icon to SVG)
-* Game context (screen) adjustments for mobile with correct aspect ratio
-* If possible set the default context to 100% height and centered
-* Add webmanifest
+* DONE // Game context (screen) adjustments for mobile with correct aspect ratio
+* DON'T BOTHER // If possible set the default context to 100% height and centered
+* DONE // Add webmanifest
 
 * Enemy portrait - Slimes
 * Enemy animation (scale Y)
@@ -33,10 +32,11 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 * FIXED // Sometimes (pretty often) after some action (dunno when but probably combination of turn change and action bar action) it is a CPU turn but he doesn't do anything. Probably something with timeouts and action flags.
 * FIXED // Sometimes defense card have incorrect pattern color (probably Shamrock card)
 
-* Incorrect background - change to SVG image instead of gradient
-* Incorrect size on mobile - adjust width and height - currently only height is checked
+* FIXED // Incorrect background - change to SVG image instead of gradient
+// SVG image was not necessary. It was a matter of incorrect body size
+* FIXED // Incorrect size on mobile - adjust width and height - currently only height is checked
 * No icons (death, shield) on mobile and mac - change to SVG shapes included in game
-* Action timer is not working in Safar web browser on Mac OS - find how to handle / change to regular JS animation or just get rid of the timer
+* FIXED // Action timer is not working in Safar web browser on Mac OS - find how to handle / change to regular JS animation or just get rid of the timer
 
 # Credits #
 
