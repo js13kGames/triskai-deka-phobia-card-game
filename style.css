@@ -192,16 +192,18 @@ text.name {
   font-family: 'Arial', sans-serif;
   font-size: 48px;
   text-anchor: start;
-  stroke: black;
+  font-weight: bold;
+  stroke: none;
   fill: #ffdb6b;
   filter: drop-shadow(3px 3px 0 black);
 }
 
 text.info {
   font-family: 'Arial', sans-serif;
-  font-size: 36px;
+  font-size: 34px;
   text-anchor: start;
-  stroke: black;
+  font-weight: bold;
+  stroke: none;
   fill: #fff;
   filter: drop-shadow(3px 3px 0 black);
 }
