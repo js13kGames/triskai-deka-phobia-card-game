@@ -1,5 +1,10 @@
 var numerals = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII']
-var icons = { death: '🕱', shamrock: '☘', attack: '⚔', defense: '⛨'}
+var icons = {
+  attack: ['swords', 25, 80, 1],
+  defense: ['shield', 25, 85, 1],
+  shamrock: ['shamrock', 10, 70, 0.65],
+  death: ['skull', 1, 1, 1] 
+}
 
 var ctx = getElement('ctx')
 var timer = getElement('timer')
@@ -24,7 +29,7 @@ function add(element) {
 }
 
 
-var SHAMROCKS_ON_START = 0 // Number of shamrocks that Player will have from the beginning
+var SHAMROCKS_ON_START = 1 // Number of shamrocks that Player will have from the beginning
 var IMMORTALS = false // If enabled then CPU and player are immortal
 var SHAMROCK_AND_DEATH_TEST = false // If enabled then the deck have only shamrocks and deaths
 
@@ -796,18 +801,24 @@ function strToHtml(str) {
   return DOM.body.childNodes[0]
 }
 
+
+
 function newCard(type, value = 0, side = 'back') {
   var cardtype = value == 13 ? "death" : value == 12 ? "shamrock" : type
   var numeral = numerals[value]
-  var icon = icons[cardtype]
+
+  var icon = icons[cardtype][0]
+  var x = icons[cardtype][1]
+  var y = icons[cardtype][2]
+  var scale = icons[cardtype][3]
 
   var str = `<div class="card ${cardtype} ${side}" deck="${type}">
   <div class="bg">
   <svg width="100%" height="100%">
       <text class="value" x="6" y="17">${value}</text>
       <text class="numeral" x="50%" y="38%">${numeral}</text>
-      <text class="icon" x="50%" y="75%">${icon}</text>
     </svg>
+    <img src="img/${icon}.svg" style="transform: translate(${x}px, ${y}px) scale(${scale})" />
   </div>
   <div class="${type}bg"></div>
   <div class="pattern ${type}"></div>
