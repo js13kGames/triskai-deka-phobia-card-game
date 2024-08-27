@@ -8,6 +8,9 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 # To do / ideas #
 
 * Change icons (swords, shield, shamrock, death, app icon to SVG)
+// swords, shield, schamrock, and death already changed
+* App icon as SVG
+* Hands icon as SVG
 * DONE // Game context (screen) adjustments for mobile with correct aspect ratio
 * DON'T BOTHER // If possible set the default context to 100% height and centered
 * DONE // Add webmanifest
