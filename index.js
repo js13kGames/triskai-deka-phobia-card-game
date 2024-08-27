@@ -3,7 +3,7 @@ var icons = {
   attack: ['swords', 25, 80, 1],
   defense: ['shield', 25, 85, 1],
   shamrock: ['shamrock', 10, 70, 0.65],
-  death: ['skull', 1, 1, 1] 
+  death: ['skull', 25, 87, 1] 
 }
 
 var ctx = getElement('ctx')
