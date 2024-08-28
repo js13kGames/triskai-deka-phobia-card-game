@@ -10,7 +10,7 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 * Change icons (swords, shield, shamrock, death, app icon to SVG)
 // swords, shield, schamrock, and death already changed
 * App icon as SVG
-* Hands icon as SVG
+* DONE Hands icon as SVG
 * DONE // Game context (screen) adjustments for mobile with correct aspect ratio
 * DON'T BOTHER // If possible set the default context to 100% height and centered
 * DONE // Add webmanifest
@@ -38,7 +38,7 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 * FIXED // Incorrect background - change to SVG image instead of gradient
 // SVG image was not necessary. It was a matter of incorrect body size
 * FIXED // Incorrect size on mobile - adjust width and height - currently only height is checked
-* No icons (death, shield) on mobile and mac - change to SVG shapes included in game
+* FIXED No icons (death, shield) on mobile and mac - change to SVG shapes included in game
 * FIXED // Action timer is not working in Safar web browser on Mac OS - find how to handle / change to regular JS animation or just get rid of the timer
 
 # Credits #

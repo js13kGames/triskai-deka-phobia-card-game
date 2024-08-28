@@ -818,7 +818,7 @@ function newCard(type, value = 0, side = 'back') {
       <text class="value" x="6" y="17">${value}</text>
       <text class="numeral" x="50%" y="38%">${numeral}</text>
     </svg>
-    <img src="img/${icon}.svg" style="transform: translate(${x}px, ${y}px) scale(${scale})" />
+    <img class="icon" src="img/${icon}.svg" style="transform: translate(${x}px, ${y}px) scale(${scale})" />
   </div>
   <div class="${type}bg"></div>
   <div class="pattern ${type}"></div>

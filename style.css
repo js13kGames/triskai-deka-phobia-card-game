@@ -59,7 +59,8 @@ text {
   background: #ff679b;
 }
 
-.card.attack text {
+.card.attack text,
+.card.attack .icon {
   filter: drop-shadow(2px 2px 0 #af2563);
 }
 
@@ -67,7 +68,8 @@ text {
   background: #ffe415;
 }
 
-.card.defense text {
+.card.defense text,
+.card.defense .icon {
   filter: drop-shadow(2px 2px 0 #e27f1b);
 }
 
@@ -75,18 +77,19 @@ text {
   background: #48cc8b;
 }
 
-.card.shamrock text {
+.card.shamrock text,
+.card.shamrock .icon {
   filter: drop-shadow(2px 2px 0 #227a6d);
+}
+
+.card.death text,
+.card.death .icon {
+  filter: drop-shadow(2px 2px 0 #808080);
 }
 
 .card.death .bg {
   background: #000;
 }
-
-.card.death text {
-  filter: drop-shadow(2px 2px 0 #808080);
-}
-
 
 .card .value {
   font: bold 32px serif;
