@@ -240,7 +240,8 @@ text.info {
 }
 
 circle.portrait {
-  fill: #263998;
+  /* fill: #263998; */
+  fill: #33295e;
   stroke: #3770ea;
 }
 
