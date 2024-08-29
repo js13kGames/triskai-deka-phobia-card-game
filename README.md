@@ -14,12 +14,12 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 * DON'T BOTHER // If possible set the default context to 100% height and centered
 * DONE // Add webmanifest
 
-* Enemy portrait - Slimes
-* Enemy animation (scale Y)
-* Enemy face expressions (surpries when got hit, angdy when low health, dead)
+* DONE Enemy portrait
+* DONE Enemy animation (floating and breathing)
 
-* Player portrait - Isoldee
-* Player face expressions
+* DONE Player portrait (Knight)
+
+* Info about CPU turn and player turn (get rid of highlight and add arrow with text)
 
 * Introduction window with game rules and objective (force confirmation to enable sound effects)
 * Exp, Level up, progression through stages and different enemies
@@ -28,6 +28,9 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 * Enemy and Player texts messages
 * Enemy Boss Shakhaar
 * Enemy Boss Lilith
+
+* Enemy face expressions (surpries when got hit, angdy when low health, dead)
+* Player face expressions
 
 # Known issues #
 
@@ -39,6 +42,8 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 * FIXED // Incorrect size on mobile - adjust width and height - currently only height is checked
 * FIXED No icons (death, shield) on mobile and mac - change to SVG shapes included in game
 * FIXED // Action timer is not working in Safar web browser on Mac OS - find how to handle / change to regular JS animation or just get rid of the timer
+
+* Safari - stops after card is selected - the card is not going into the spot. Probably something with the animations
 
 # Credits #
 
