@@ -241,8 +241,10 @@ text.info {
 
 circle.portrait {
   /* fill: #263998; */
-  fill: #33295e;
-  stroke: #3770ea;
+  /*fill: #33295e;*/
+  fill: none;
+  /*stroke: #3770ea;*/
+  stroke: none;
 }
 
 circle.portrait.active {
