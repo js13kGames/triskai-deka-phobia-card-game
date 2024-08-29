@@ -50,6 +50,8 @@
       <circle cx="64" cy="96" r="10" />
       <circle cx="77" cy="95" r="10" />
     </g>
+    <path d="M 75 77 L 86 77 Q 77 90 75 77 Z" fill="#f0f3ca" />
+    <path d="M 75 77 L 86 77 Q 77 90 75 77 Z" fill="#f0f3ca" transform="translate(140, 0) scale(-1, 1)" />
   </g>
   <circle cx="61" cy="60" r="4" fill="#99ff89" />
   <ellipse rx="6" ry="9" fill="#b8f676" transform="translate(83 52) rotate(-60)" />
