@@ -240,16 +240,14 @@ text.info {
 }
 
 circle.portrait {
-  /* fill: #263998; */
-  /*fill: #33295e;*/
   fill: none;
-  /*stroke: #3770ea;*/
   stroke: none;
+  z-index: 1;
 }
 
 circle.portrait.active {
-  stroke: white;
-  stroke-width: 4;
+  fill: yellow;
+  filter: blur(28px)
 }
 
 .slime {
