@@ -10,13 +10,13 @@ var ctx = getElement('ctx')
 var timer = getElement('timer')
 var hands = getElement('hands')
 
-var playerCircle = getElement('playercircle')
 var playerInfo = getElement('playerinfo')
+var playerturn = getElement('playerturn')
 var playerHpBar = getElement('playerhpbar')
 var playerActionBar = getElement('playeractionbar')
 
-var cpuCircle = getElement('cpucircle')
 var cpuInfo = getElement('cpuinfo')
+var cputurn = getElement('cputurn')
 var cpuHpBar = getElement('cpuhpbar')
 var cpuActionBar = getElement('cpuactionbar')
 
@@ -192,7 +192,7 @@ function resetGame() {
 
   turn = 0
   isActionTime = false
-  toggleCircles()
+  toggleTurns()
 
   addShamrocks(SHAMROCKS_ON_START)
 
@@ -226,7 +226,7 @@ function resetTimer() {
 }
 
 function onTimer() {
-  toggleCircles()
+  toggleTurns()
   toggleHands()
 
   if(turn == 1) {
@@ -256,18 +256,19 @@ function changeTurn() {
 }
 
 function toggleHands() {
+  toggleTurns()
   hands.style.display = turn == 0 ? "block" : "none"
 }
 
-function toggleCircles() {
-  cpuCircle.classList.remove('active')
-  playerCircle.classList.remove('active')
+function toggleTurns() {
+  cputurn.classList.remove('active')
+  playerturn.classList.remove('active')
 
   if(turn == 0) {
-    playerCircle.classList.add('active')
+    playerturn.classList.add('active')
   }
   else {
-    cpuCircle.classList.add('active')
+    cputurn.classList.add('active')
   }
 }
 

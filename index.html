@@ -13,10 +13,7 @@
   <script src="index.js" defer></script>
 </head>
 <body>
-<!-- Game screen context -->
 <div id="ctx">
-
-  <!-- Timer -->
   <svg style="translate: 18px 25px">
     <circle cx="52" cy="52" r="50" fill="black" stroke="#3770ea" stroke-width="4" />
     <circle id="timer" cx="52" cy="52" r="40" fill="none" stroke="white" stroke-width="8" stroke-dasharray="360" stroke-dashoffset="0" transform="rotate(-90, 52, 52)">
@@ -25,7 +22,6 @@
     <rect x="58" y="19" width="28" height="40" fill="white" stroke="black" stroke-width="2" rx="4" ry="4" transform="rotate(15)" />
   </svg>
 
-  <!-- Stage info bar -->
   <div class="button stage" style="translate: 155px 25px">
     <div class="bg"></div>
     <div class="surface">
@@ -35,43 +31,35 @@
   </div>
   </div>
 
-  <!-- CPU icon, and heal and action bards -->
   <div id="cpu" style="left: 0px; top: 145px; width: 100%; height: 270px">
     <svg width="100%" height="100%" style="position: absolute">
-      <!-- Portrait -->
-      <circle class="portrait" id="cpucircle" cx="580" cy="135" r="80" stroke-width="3" />
-      <!-- Name -->
       <text id="cpuinfo" class="name" x="18" y="55">CPU</text>
-      <!-- Health bar area -->
+
       <text class="info" x="18" y="113">HP</text>
       <rect x="74" y="95" width="360" height="40" fill="#262c45" />
-      <!-- Action bar area -->
+
       <text class="info" x="18" y="155">AT</text>
       <rect x="74" y="145" width="360" height="24" fill="#262c45" />
     </svg>
 
     <img id="cpuimage" src="img/enemy1.svg" style="position: absolute; left: 495px; top: 40px; transform: scale(1.5); z-index: 2;"/>
+    <img id="cputurn" src="img/cputurn.svg" style="position: absolute; left: 540px; top: 235px; transform: scale(2.5); z-index: 3;"/>
 
-    <!-- Health bar -->
     <svg id="cpuhpbar" style="left: 78px; top: 99px; width: 352px; height: 40px">
       <rect class="hp" x="0" y="0" width="352" height="32" fill="#f00" />
       <rect class="hp" x="0" y="0" width="352" height="8" fill="#d00" />
     </svg>
 
-    <!-- Action bar -->
     <svg id="cpuactionbar" style="left: 78px; top: 149px; width: 352; height: 18">
       <rect x="0" y="0" width="352" height="16" fill="#ffe415" />
       <rect x="0" y="0" width="352" height="6" fill="#e27f1b" />
     </svg>
   </div>
 
-  <!-- Player icon, and heal and action bars -->
   <div id="player" style="left: 0px; top: 1000px; width: 100%; height: 250px">
     <svg width="100%" height="100%" style="position: absolute">
-      <circle class="portrait" id="playercircle" cx="130" cy="125" r="80" stroke-width="3" />
-    
       <text id="playerinfo" class="name" x="290" y="55">Player</text>
-    
+
       <text class="info" x="290" y="113">HP</text>
       <rect x="346" y="95" width="360" height="40" fill="#262c45" />
     
@@ -79,22 +67,20 @@
       <rect x="346" y="145" width="360" height="24" fill="#262c45" />
     </svg>
 
-    <img id="cpuimage" src="img/player.svg" style="position: absolute; left: 40px; top: 0px; transform: scale(3); z-index: 2;"/>
+    <img id="playerimage" src="img/player.svg" style="position: absolute; left: 40px; top: 10px; transform: scale(3); z-index: 2;"/>
+    <img id="playerturn" src="img/playerturn.svg" style="position: absolute; left: 90px; top: -15px; transform: scale(2.5); z-index: 3;"/>
 
-    <!-- Health bar -->
     <svg id="playerhpbar" style="left: 350px; top: 99px; width: 352px; height: 40px">
       <rect class="hp" x="0" y="0" width="352" height="32" fill="#f00" />
       <rect class="hp" x="0" y="0" width="352" height="8" fill="#d00" />
     </svg>
 
-    <!-- Action bar -->
     <svg id="playeractionbar" style="left: 350px; top: 149px; width: 352px; height: 18px">
       <rect x="0" y="0" width="352" height="16" fill="#ffe415" />
       <rect x="0" y="0" width="352" height="6" fill="#e27f1b" />
     </svg>
   </div>
 
-  <!-- Player hand spots -->
   <div class="spot" id="attack" style="translate: 70px 770px">
     <img src="img/swords.svg"  style="transform: translate(40px, 60px) scale(2);" />
   </div>
@@ -107,12 +93,10 @@
     <img src="img/shield.svg" style="transform: translate(40px, 60px) scale(2);" />
   </div>
 
-  <!-- Pointing hands icons - visible when player should select a card -->
   <div id="hands">
     <div class="hand" style="left: 250px; top: 450px;"><img src="img/hand.svg" style="transform: scale(-1.3, 1.3);" /></div>
     <div class="hand" style="left: 550px; top: 450px;"><img src="img/hand.svg" style="transform: scale(-1.3, 1.3);" /></div>
   </div>
-
 </div>
 </body>
 </html>
