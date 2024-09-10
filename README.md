@@ -20,6 +20,8 @@ You are granted one Shamrock card at start.
 
 Good luck and win with as many green bombs as you can.
 
+![image cover](./media/Cover 800x500.png)
+
 # To do #
 
 * DONE Change icons (swords, shield, shamrock, death, app icon to SVG)
