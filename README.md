@@ -20,7 +20,7 @@ You are granted one Shamrock card at start.
 
 Good luck and win with as many green bombs as you can.
 
-![image cover](./media/Cover 800x500.png)
+![cover](https://github.com/romualdk/js13k-2024/blob/cd4d36f68f898a5d6ebd381eaa16dd15f6c4607e/media/Cover%20800x500.png?raw=true)
 
 # To do #
 
