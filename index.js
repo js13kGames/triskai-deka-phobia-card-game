@@ -11,6 +11,9 @@ var timer = getElement('timer')
 var hands = getElement('hands')
 var stage = getElement('stage')
 
+add(InfoArea('cpu'))
+add(InfoArea('player'))
+
 var playerInfo = getElement('playerinfo')
 var playerturn = getElement('playerturn')
 var playerHpBar = getElement('playerhpbar')
@@ -811,6 +814,58 @@ function newCard(type, value = 0, side = 'back') {
   </div>
   <div class="${type}bg"></div>
   <div class="pattern ${type}"></div>
+  </div>`
+
+  return strToHtml(str)
+}
+
+function InfoArea(type) {
+  if(type == 'cpu') {
+    t = 145
+    x = 18
+    x2 = 495
+    y2 = 40
+    s2 = 1.5
+    x3 = 540
+    y3 = 235
+    s3 = 2.5
+    l2 = 78
+  }
+  else {
+    t = 1000
+    x = 290
+    x2 = 40
+    y2 = 10
+    s2 = 3
+    x3 = 90
+    y3 = -15
+    s3 = 2.5
+    l2 = 350
+  }
+
+  var str = `<div id="${type}" style="left: 0px; top: ${t}px; width: 100%; height: 270px">
+    <svg width="100%" height="100%" style="position: absolute">
+      <text id="${type}info" class="name" x="${x}" y="55"></text>
+
+      <text class="info" x="${x}" y="113">HP</text>
+      <rect x="${x + 56}" y="95" width="360" height="40" fill="#262c45" />
+
+      <text class="info" x="${x}" y="155">AT</text>
+      <rect x="${x + 56}" y="145" width="360" height="24" fill="#262c45" />
+    </svg>
+
+    <img id="${type}image" src="img/${type}.svg" style="position: absolute; left: ${x2}px; top: ${y2}px; transform: scale(${s2}); z-index: 2;"/>
+    <img id="${type}turn" src="img/${type}turn.svg" style="position: absolute; left: ${x3}px; top: ${y3}px; transform: scale(${s3}); z-index: 3;"/>
+
+    <svg id="${type}hpbar" style="left: ${l2}px; top: 99px; width: 352px; height: 40px">
+      <rect class="hp" x="0" y="0" width="352" height="32" fill="#f00" />
+      <rect class="hp" x="0" y="0" width="352" height="8" fill="#d00" />
+    </svg>
+
+    <svg id="${type}actionbar" style="left: ${l2}px; top: 149px; width: 352; height: 18">
+      <rect x="0" y="0" width="352" height="16" fill="#ffe415" />
+      <rect x="0" y="0" width="352" height="6" fill="#e27f1b" />
+    </svg>
   </div>`
 
   return strToHtml(str)
