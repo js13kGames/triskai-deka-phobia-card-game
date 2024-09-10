@@ -29,10 +29,9 @@ function add(element) {
   ctx.appendChild(element)
 }
 
-
-var SHAMROCKS_ON_START = 1 // Number of shamrocks that Player will have from the beginning
-var IMMORTALS = false // If enabled then CPU and player are immortal
-var SHAMROCK_AND_DEATH_TEST = false // If enabled then the deck have only shamrocks and deaths
+var SHAMROCKS_ON_START = 1
+var IMMORTALS = false
+var SHAMROCK_AND_DEATH_TEST = false
 
 var TIMER_DURATION = 0.5 // seconds
 var SHOW_CARD_DURATION = 0.5
@@ -55,43 +54,35 @@ function playSound(sfx) {
   zzfx(...sfx)
 }
 
-// Who's turn to pick a card
-// This is not related with action (attack) because it has own timer (AT)
 var turn = 0 // 0 = Player, 1 = CPU
-// Bnuch of flags to control who can do what
 var isActionTime = false
 
 var stageNumber = 1
 
-// Player
 var playerName = 'Knight'
 var playerLv = 1
 var playerMaxHP = 20
 var playerAttack = 2
-var playerHP = playerMaxHP // player health points
-var playerActionBarDuration = 10 // seconds
+var playerHP = playerMaxHP
+var playerActionBarDuration = 10
 var playerActionBarAnimation = null
 
-// CPU
 var cpuName = 'Green Bomb'
 var cpuLv = 1
 var cpuMaxHP = 10
 var cpuAttack = 2
-var cpuHP = cpuMaxHP // CPU health points
-var cpuActionBarDuration = 13 // seconds
+var cpuHP = cpuMaxHP
+var cpuActionBarDuration = 13
 var cpuActionBarAnimation = null
 
-// Cards to pick from
 var cardsInDeck = 7
-var attackDeck = [] // Stack of attack cards
-var defenseDeck = [] // Stack of defense cards
+var attackDeck = []
+var defenseDeck = []
 
-// Cards picked by Player
 var playerAttackHand = []
 var playerLuckyHand = []
 var playerDefenseHand = []
 
-// Cards picked by CPU
 var cpuAttackHand = []
 var cpuLuckyHand = []
 var cpuDefenseHand = []
@@ -128,7 +119,6 @@ function screenShake() {
   ctx.animate(shakeKeyframes, {duration: 500})
 }
 
-// Prepare timer animation
 var timerAnim = document.createElementNS('http://www.w3.org/2000/svg','animate')
 timerAnim.setAttribute("attributeName", "stroke-dashoffset")
 timerAnim.setAttribute("from", 360)
@@ -283,7 +273,6 @@ function resetPlayerActionBar() {
   })
 }
 
-// Player action when action bar is full
 function doPlayerAction() {
   isActionTime = true;
   pauseActionBars();
@@ -296,7 +285,6 @@ function doPlayerAction() {
   hitPoints = playerAttack + (hitPoints < 0 ? 0 : hitPoints)
 
   if (hitPoints > 0) {
-    // Player have no cards in attack hand
     if(playerAttackHand.length == 0) {
       cpuHP = cpuHP - hitPoints < 0 ? 0 : cpuHP - hitPoints
       playSound(sfxHit)
@@ -305,7 +293,6 @@ function doPlayerAction() {
       removeCardsFromHand(cpuDefenseHand)
 
       if(cpuHP == 0) {
-        console.log("CPU DEAD")
         cpuHP = 0
         refreshCpuHpBar()
         playSound(sfxWin)
@@ -319,7 +306,6 @@ function doPlayerAction() {
         resumeCpu()
       }
     }
-    // Player have cards in attack hand
     else {
       for(var i in playerAttackHand) {
         var card = playerAttackHand[i]
@@ -338,7 +324,6 @@ function doPlayerAction() {
             removeCardsFromHand(cpuDefenseHand)
   
             if(cpuHP == 0) {
-              console.log("CPU DEAD")
               cpuHP = 0
               refreshCpuHpBar()
               playSound(sfxWin)
@@ -385,7 +370,6 @@ function resetCpuActionBar() {
   })
 }
 
-// CPU action when action bar is full
 function doCpuAction() {
   isActionTime = true;
   pauseActionBars();
@@ -398,7 +382,6 @@ function doCpuAction() {
   hitPoints = cpuAttack + (hitPoints < 0 ? 0 : hitPoints)
 
   if (hitPoints > 0) {
-    // CPU have no cards in attack hand
     if(cpuAttackHand.length == 0) {
       playerHP = playerHP - hitPoints < 0 ? 0 : playerHP - hitPoints
       playSound(sfxHit)
@@ -420,7 +403,6 @@ function doCpuAction() {
         resumeCpu()
       }
     }
-    // CPU have cards in attack hand
     else {
       for(var i in cpuAttackHand) {
         var card = cpuAttackHand[i]
@@ -440,7 +422,6 @@ function doCpuAction() {
             removeCardsFromHand(playerDefenseHand)
   
             if(playerHP == 0) {
-              console.log("PLAYER DEAD")
               playerHP = 0
               refreshPlayerHpBar()
               playSound(sfxDeath)
@@ -471,7 +452,7 @@ function addShamrocks(quantity) {
     var l = playerLuckyHand.length
     var dir = l % 2 == 0 ? -1 : 1
     var x = 297 + 15 * dir
-    var y = 810 - 15 * l
+    var y = 780 - 15 * l
 
     c.style.transform = `translate(${x}px, ${y}px)`
     playerLuckyHand.push(c)
@@ -586,7 +567,7 @@ function playerPickCard() {
     var l = playerAttackHand.length
     var x = 45 + 35 * l
     var dir = l % 2 == 0 ? -1 : 1
-    var y = 782 + 15 * l * dir
+    var y = 752 + 15 * l * dir
 
     showCard(c, () => { moveToHand(c, x, y, l, () => {
           playerAttackHand.push(c)
@@ -601,7 +582,7 @@ function playerPickCard() {
     var l = playerDefenseHand.length
     var x = 472 + 35 * l
     var dir = l % 2 == 0 ? -1 : 1
-    var y = 782 + 15 * l * dir
+    var y = 752 + 15 * l * dir
 
     showCard(c, () => { moveToHand(c, x, y, l, () => {
         playerDefenseHand.push(c)
@@ -617,7 +598,7 @@ function playerPickCard() {
     var l = playerLuckyHand.length
     var dir = l % 2 == 0 ? -1 : 1
     var x = 297 + 15 * dir
-    var y = 810 - 15 * l
+    var y = 780 - 15 * l
 
     showCard(c, () => { moveToHand(c, x, y, l, () => {
         playerLuckyHand.push(c)
@@ -650,7 +631,6 @@ function cpuPickCard() {
   var attackDeckPoints = getHandPoints(cpuAttackHand)
   var defenseDeckPoints = getHandPoints(cpuDefenseHand)
 
-  // Select defense card if it has lower points than attack hand
   if(defenseDeckPoints < attackDeckPoints) {
     deck = defenseDeck
   }
@@ -698,7 +678,6 @@ function cpuPickCard() {
 function playerUseShamrockOrDie(deathCard, luckyHand) {
   if(luckyHand.length == 0) {
     if(IMMORTALS) {
-      // move to lucky hand and remove
       moveToHand(deathCard, 297, 810, 500, () => {
         playSound(sfxLuck)
         deathCard.remove()
@@ -706,7 +685,6 @@ function playerUseShamrockOrDie(deathCard, luckyHand) {
       })
     }
     else {
-      console.log('PLAYER DEAD')
       playerHP = 0
       refreshPlayerHpBar()
       playSound(sfxDeath)
@@ -734,7 +712,6 @@ function cpuUseShamrockOrDie(deathCard, luckyHand) {
       })
     }
     else {
-      console.log('CPU DEAD')
       cpuHP = 0
       refreshCpuHpBar()
       playSound(sfxWin)
@@ -804,8 +781,6 @@ function strToHtml(str) {
   DOM = parser.parseFromString(str, 'text/html')
   return DOM.body.childNodes[0]
 }
-
-
 
 function newCard(type, value = 0, side = 'back') {
   var cardtype = value == 13 ? "death" : value == 12 ? "shamrock" : type
