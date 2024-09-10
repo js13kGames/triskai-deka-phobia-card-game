@@ -44,6 +44,10 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 
 * Safari - stops after card is selected - the card is not going into the spot. Probably something with the animations
 
+# Tools #
+
+* https://minify-js.com/
+
 # Credits #
 
 Sounds made with https://killedbyapixel.github.io/ZzFX/

@@ -106,6 +106,12 @@ function resizeWindow() {
   ctx.style.top = `${y}px`
 }
 
+function vibrate(pat) {
+  if ("vibrate" in navigator) {
+    navigator.vibrate(pat)
+  }
+}
+
 function screenShake() {
   var shakeKeyframes = []
 
@@ -117,6 +123,7 @@ function screenShake() {
   }
 
   ctx.animate(shakeKeyframes, {duration: 500})
+  vibrate(500)
 }
 
 var timerAnim = document.createElementNS('http://www.w3.org/2000/svg','animate')
@@ -138,23 +145,25 @@ function updateStageInfo() {
 function progressPlayer() {
   playerLv += 1
   playerMaxHP = 20 + playerLv * 5
-  playerAttack = 2 + playerLv * 1.5
+  playerAttack = 6 + playerLv * 3
 }
 
 function progressCpu() {
   cpuLv = stageNumber + Math.round(Math.random(stageNumber * 4))
-  cpuMaxHP = 10 + cpuLv * 10
-  cpuAttack = 2 + cpuLv * 8
+  cpuMaxHP = cpuLv * 10
+  cpuAttack = cpuLv * 4
   cpuActionBarDuration = 8 + Math.round(Math.random(6))
 }
 
 function nextStage() {
+  vibrate(500)
   stageNumber += 1
   progressCpu()
   resetGame()
 }
 
 function gameOver() {
+  vibrate(500)
   stageNumber = 1
   progressCpu()
   resetGame()
@@ -390,7 +399,6 @@ function doCpuAction() {
       removeCardsFromHand(playerDefenseHand)
 
       if(playerHP == 0) {
-        console.log("PLAYER DEAD")
         playerHP = 0
         refreshPlayerHpBar()
         playSound(sfxDeath)
@@ -560,6 +568,7 @@ function playerPickCard() {
 
   pauseActionBars()
   playSound(sfxPick)
+  vibrate(50)
 
   if(this.classList.contains('attack')) {
     var c = attackDeck.pop()
@@ -624,6 +633,7 @@ function cpuPickCard() {
 
   pauseActionBars()
   playSound(sfxPick)
+  vibrate(50)
 
   var type = Math.round(Math.random(1))
   var deck = type == 0 ? attackDeck : defenseDeck
