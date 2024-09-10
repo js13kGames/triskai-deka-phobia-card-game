@@ -9,6 +9,7 @@ var icons = {
 var ctx = getElement('ctx')
 var timer = getElement('timer')
 var hands = getElement('hands')
+var stage = getElement('stage')
 
 var playerInfo = getElement('playerinfo')
 var playerturn = getElement('playerturn')
@@ -60,8 +61,10 @@ var turn = 0 // 0 = Player, 1 = CPU
 // Bnuch of flags to control who can do what
 var isActionTime = false
 
+var stageNumber = 1
+
 // Player
-var playerName = 'Isoldee'
+var playerName = 'Knight'
 var playerLv = 1
 var playerMaxHP = 20
 var playerAttack = 2
@@ -70,7 +73,7 @@ var playerActionBarDuration = 10 // seconds
 var playerActionBarAnimation = null
 
 // CPU
-var cpuName = 'Shakhaar'
+var cpuName = 'Green Bomb'
 var cpuLv = 1
 var cpuMaxHP = 10
 var cpuAttack = 2
@@ -92,40 +95,6 @@ var playerDefenseHand = []
 var cpuAttackHand = []
 var cpuLuckyHand = []
 var cpuDefenseHand = []
-
-// Enemy types
-var enemyType = [
-  {
-    name: 'Green Slime',
-    minLv: 1,
-    maxLv: 3,
-    minHP: 5,
-    maxHP: 15,
-    actionBarDuration: 17
-  },
-  {
-    name: 'Blue Slime',
-    minLv: 2,
-    maxLv: 5,
-    minHP: 10,
-    maxHP: 30,
-    actionBarDuration: 15
-  },
-  {
-    name: 'Red Slime',
-    minLv: 5,
-    maxLv: 10,
-    minHp: 25,
-    maxHp: 50
-  },
-  {
-    name: 'Shakhaar',
-    minLv: 30,
-    maxLv: 30,
-    minHp: 50,
-    maxHp: 70
-  }
-]
 
 var scale = 1
 window.onresize = resizeWindow;
@@ -169,11 +138,42 @@ timerAnim.setAttribute("fill", "forwards")
 timer.appendChild(timerAnim)
 
 /* START GAME */
+progressCpu()
 resetGame()
+
+function updateStageInfo() {
+  stage.innerHTML = `Stage ${stageNumber}`
+}
+
+function progressPlayer() {
+  playerLv += 1
+  playerMaxHP = 20 + playerLv * 5
+  playerAttack = 2 + playerLv * 1.5
+}
+
+function progressCpu() {
+  cpuLv = stageNumber + Math.round(Math.random(stageNumber * 4))
+  cpuMaxHP = 10 + cpuLv * 10
+  cpuAttack = 2 + cpuLv * 8
+  cpuActionBarDuration = 8 + Math.round(Math.random(6))
+}
+
+function nextStage() {
+  stageNumber += 1
+  progressCpu()
+  resetGame()
+}
+
+function gameOver() {
+  stageNumber = 1
+  progressCpu()
+  resetGame()
+}
 
 function resetGame() {
   updatePlayerInfo()
   updateCpuInfo()
+  updateStageInfo()
 
   playerHP = playerMaxHP
   cpuHP = cpuMaxHP
@@ -309,7 +309,8 @@ function doPlayerAction() {
         cpuHP = 0
         refreshCpuHpBar()
         playSound(sfxWin)
-        setTimeout(resetGame, DEATH_DURATION * 1000)
+        progressPlayer()
+        setTimeout(nextStage, DEATH_DURATION * 1000)
       }
       else {
         resumeActionBars()
@@ -341,7 +342,8 @@ function doPlayerAction() {
               cpuHP = 0
               refreshCpuHpBar()
               playSound(sfxWin)
-              setTimeout(resetGame, DEATH_DURATION * 1000)
+              progressPlayer()
+              setTimeout(nextStage, DEATH_DURATION * 1000)
             }
             else {
               resumeActionBars()
@@ -409,7 +411,7 @@ function doCpuAction() {
         playerHP = 0
         refreshPlayerHpBar()
         playSound(sfxDeath)
-        setTimeout(resetGame, DEATH_DURATION * 1000)
+        setTimeout(gameOver, DEATH_DURATION * 1000)
       }
       else {
         resetCpuActionBar()
@@ -442,7 +444,7 @@ function doCpuAction() {
               playerHP = 0
               refreshPlayerHpBar()
               playSound(sfxDeath)
-              setTimeout(resetGame, DEATH_DURATION * 1000)
+              setTimeout(gameOver, DEATH_DURATION * 1000)
             }
             else {
               resumeActionBars()
@@ -708,7 +710,7 @@ function playerUseShamrockOrDie(deathCard, luckyHand) {
       playerHP = 0
       refreshPlayerHpBar()
       playSound(sfxDeath)
-      setTimeout(resetGame, DEATH_DURATION * 1000)
+      setTimeout(gameOver, DEATH_DURATION * 1000)
     }
   }
   else {
@@ -736,7 +738,8 @@ function cpuUseShamrockOrDie(deathCard, luckyHand) {
       cpuHP = 0
       refreshCpuHpBar()
       playSound(sfxWin)
-      setTimeout(resetGame, DEATH_DURATION * 1000)
+      progressPlayer()
+      setTimeout(nextStage, DEATH_DURATION * 1000)
     }
   }
   else {

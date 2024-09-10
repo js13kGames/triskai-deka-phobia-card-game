@@ -5,7 +5,7 @@ https://js13kgames.com/
 
 https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734f77da68
 
-# To do / ideas #
+# To do #
 
 * DONE Change icons (swords, shield, shamrock, death, app icon to SVG)
 * DONE App icon as SVG
@@ -13,17 +13,16 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 * DONE // Game context (screen) adjustments for mobile with correct aspect ratio
 * DON'T BOTHER // If possible set the default context to 100% height and centered
 * DONE // Add webmanifest
-
 * DONE Enemy portrait
 * DONE Enemy animation (floating and breathing)
-
 * DONE Player portrait (Knight)
+* DONE Info about CPU turn and player turn (get rid of highlight and add arrow with text)
+* DONE Exp, Level up, progression through stages and different enemies
 
-* Info about CPU turn and player turn (get rid of highlight and add arrow with text)
+# Ideas
 
-* Introduction window with game rules and objective (force confirmation to enable sound effects)
-* Exp, Level up, progression through stages and different enemies
 * Progress save in local storage
+* Introduction window with game rules and objective (force confirmation to enable sound effects)
 
 * Enemy and Player texts messages
 * Enemy Boss Shakhaar
