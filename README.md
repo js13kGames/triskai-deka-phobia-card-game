@@ -18,6 +18,7 @@ https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734
 * DONE Player portrait (Knight)
 * DONE Info about CPU turn and player turn (get rid of highlight and add arrow with text)
 * DONE Exp, Level up, progression through stages and different enemies
+* DONE Vibrations
 
 # Ideas
 
